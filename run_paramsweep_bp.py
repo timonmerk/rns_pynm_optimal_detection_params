@@ -297,54 +297,6 @@ for sub in subjects_use[::-1]:
             out_save_dict[sub][PE]["RNS_PER_cm"] = df_per_RNS.query("sub == @sub and PE == @PE")["cm"]
             out_save_dict[sub][PE]["RNS_PER_cm_norm"] = df_per_RNS.query("sub == @sub and PE == @PE")["cm_normed"]
 
-            index_current_PE = list_PE.index(PE)
-            index_next_PE = index_current_PE + 1
-
-            if index_next_PE < len(list_PE):
-                out_save_dict[sub][PE]["PE_NEXT_name"] = list_PE[index_next_PE]
-
-                with open(os.path.join(PATH_OUT, list_PE[index_next_PE]), 'rb') as handle:
-                    b_next = pickle.load(handle)
-
-                vals_PE_next = np.concatenate([b_next[seg][max_feature_name] for seg in b_next.keys()])
-                sz_ground_truth = get_seizure_GT(b_next)
-
-                out_pr_param_set_best = get_cm_for_pynm_predict_params(
-                    b_next,
-                    max_feature_name,
-                    thr_bandpass=param_thr_bandpass[max_y],
-                    duration_min_=param_duration_min[max_x]
-                )
-                cm_params = get_confusion_matrix(sz_ground_truth, out_pr_param_set_best)
-                out_save_dict[sub][PE]["PE_NEXT_cm_best"] = cm_params
-
-                # set all to None which miss true prediction of seizures
-                out_all_SZ = out_all
-                out_all_SZ[out_all_SZ[:, :, :, 1, 0] != 0, :, :] = None
-                TNR = out_all_SZ[:, :, :, 0, 0] / (out_all_SZ[:, :, :, 0, 0] + out_all_SZ[:, :, :, 0, 1])
-                TPR = out_all_SZ[:, :, :, 1, 1] / (out_all_SZ[:, :, :, 1, 0] + out_all_SZ[:, :, :, 1, 1])
-                weight_N = 0.5
-                weight_P = 0.5
-                cm_out_all_sz_pr = TNR * weight_N + TPR * weight_P
-                
-                max_feature_all_sz, max_x_all_sz, max_y_all_sz = np.unravel_index(np.nanargmax(np.abs(cm_out_all_sz_pr)), cm_out_all_sz_pr.shape)
-                max_feature_name_all_sz = col_use[max_feature_all_sz]
-
-                out_pr_param_set_all_sz = get_cm_for_pynm_predict_params(
-                    b_next,
-                    max_feature_name_all_sz,
-                    thr_bandpass=param_thr_bandpass[max_y_all_sz],
-                    duration_min_=param_duration_min[max_x_all_sz]
-                )
-                cm_params = get_confusion_matrix(sz_ground_truth, out_pr_param_set_all_sz)
-                out_save_dict[sub][PE]["PE_NEXT_cm_all_sz"] = cm_params
-                out_save_dict[sub][PE]["param_allsz_param_duration"] = param_duration_min[max_x_all_sz]
-                out_save_dict[sub][PE]["param_allsz_param_thr"] = param_thr_bandpass[max_y_all_sz]
-                out_save_dict[sub][PE]["allsz_feature_select"] = col_use[max_feature_all_sz]
-                PE_next = list_PE[index_next_PE]
-                out_save_dict[sub][PE]["PE_NEXT_RNS_cm"] = df_per_RNS.query("sub == @sub and PE == @PE_next")["cm"]
-            # Next it would be necessary to 
-
     with open(f'{sub}_per_within_and_next_PE.p', 'wb') as handle:
         pickle.dump(out_save_dict[sub], handle, protocol=pickle.HIGHEST_PROTOCOL)
         

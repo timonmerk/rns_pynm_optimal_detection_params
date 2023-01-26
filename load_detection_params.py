@@ -26,8 +26,8 @@ def get_detection_pattern(df_settings, sub='RNS1529', str_PE='20151215'):
                 str_detector = "B"
             if row["detector"] == "First Detector":
                 str_detect = f"{str_detector}1"
-            #else:
-            #    str_detect = f"{str_detector}2"    
+            else:
+                str_detect = f"{str_detector}2"    
             if str_detect not in pattern_list:
                 pattern_list.append(str_detect)
     return pattern_list
@@ -108,19 +108,16 @@ def get_per_PE(run_):
 
 
 PATH_OUT = r"X:\Users\timon\RNSOut_pynm_good"
-PATH_EDF = r"X:\RNS_DataBank\PITT\PIT-RNS1529\iEEG\PIT-RNS1529_PE20151118-1_EOF_SZ-VK.EDF"
 df_RNS_annot = pd.read_csv(r"X:\Users\timon\RNS_Detect_Annotations\Pitt_Ecogs_events_updated_01212022.csv")
 
 df_settings = pd.read_csv("iESPNet_bandpass_parameters_PythonMerge.csv")
 
-subjects_use = ['RNS8973', 'RNS7525', 'RNS9183', 'RNS1529', 'RNS2227', 'RNS1534']
 subjects_all = df_settings["rns_id"].unique()
 
 PEs_paths =  glob.glob(f"X:\\RNS_DataBank\\PITT\\PIT-*\\iEEG\\PIT-*_PE*-1_EOF_SZ-VK.EDF")
 l_run = []
 
 for sub in subjects_all:
-    #list_PE = [f for f in os.listdir(os.path.join(PATH_OUT)) if sub in f and ".p" in f]
 
     PEs_str = np.unique(
         [
@@ -145,6 +142,8 @@ results = Parallel(n_jobs=30)(
 memory.clear(warn=False)
 
 df = pd.DataFrame([r for r in results if r is not None])
+df.to_pickle("performances_RNS_bandpasse_new.p")
+# store now confusion matrices for each PE
 
 from sklearn import metrics
 from matplotlib import pyplot as plt
@@ -159,10 +158,3 @@ disp = metrics.ConfusionMatrixDisplay(
 )
 disp.plot()
 disp.ax_.set_title("First Bandpass Detector")
-
-
-
-df.to_pickle("performances_RNS_bandpass.p")
-# store now confusion matrices for each PE
-
-
