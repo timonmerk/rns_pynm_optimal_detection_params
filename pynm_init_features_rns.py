@@ -51,6 +51,7 @@ def init_pynm_rns_stream():
         "low beta": [13, 20],
         "high beta": [20, 35],
         "low gamma": [35, 60],
+        "broadband" : [20, 120]
     }
 
     # INIT Feature Estimation Time Window Length and Frequency
@@ -67,7 +68,7 @@ def init_pynm_rns_stream():
     stream.settings["features"]["sharpwave_analysis"] = True
     stream.settings["features"]["bursts"] = True
     stream.settings["features"]["mne_connectiviy"] = False
-    stream.settings["features"]["fooof"] = True
+    stream.settings["features"]["fooof"] = False
     stream.settings["fooof"]["periodic"]["center_frequency"] = False
     stream.settings["fooof"]["periodic"]["height_over_ap"] = False
     stream.settings["fooof"]["periodic"]["band_width"] = False
