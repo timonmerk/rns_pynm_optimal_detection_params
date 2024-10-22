@@ -17,6 +17,7 @@ from sklearn import model_selection, metrics, linear_model
 import xgboost
 
 PATH_OUT = "/mnt/4TB/timon/RNSOut_pynm_good"
+PATH_OUT = r"C:\Users\ICN_admin\Documents\Paper Decoding Toolbox\rns_pynm_optimal_detection_params"
 sub_name = "PIT-RNS0427"
 
 # read pickle file with whole PE
@@ -190,19 +191,19 @@ sb.boxplot(df_melt, x="variable", y="value", hue="sz")
 
 
 # init analyzer
-feature_reader = nm_analysis.Feature_Reader(
-    feature_dir=PATH_OUT, feature_file=sub_name
-)
+#feature_reader = nm_analysis.Feature_Reader(
+#    feature_dir=PATH_OUT, feature_file=sub_name
+#)
 
-arr = stats.zscore(feature_reader.feature_arr)
-arr_background = arr[arr["ch1_LineLength"]<np.percentile(arr["ch1_LineLength"], q=75)]
+#arr = stats.zscore(feature_reader.feature_arr)
+#arr_background = arr[arr["ch1_LineLength"]<np.percentile(arr["ch1_LineLength"], q=75)]
 
-plt.imshow(arr_background.T, aspect="auto")
-plt.yticks(np.arange(arr_background.shape[1]), feature_reader.feature_arr.columns)
-plt.show()
+#plt.imshow(arr_background.T, aspect="auto")
+#plt.yticks(np.arange(arr_background.shape[1]), feature_reader.feature_arr.columns)
+#plt.show()
 
-plt.imshow(arr.T, aspect="auto")
-plt.yticks(np.arange(arr.shape[1]), feature_reader.feature_arr.columns)
-plt.colorbar()
-plt.clim(-1, 1)
-plt.show()
+#plt.imshow(arr.T, aspect="auto")
+#plt.yticks(np.arange(arr.shape[1]), feature_reader.feature_arr.columns)
+#plt.colorbar()
+#plt.clim(-1, 1)
+#plt.show()

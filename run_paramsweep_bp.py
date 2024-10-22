@@ -217,11 +217,13 @@ def get_thr_arrays(feature_name):
     return bins
 
 PATH_OUT = r"X:\Users\timon\RNSOut_pynm_good"
-df_RNS_annot = pd.read_csv(r"X:\Users\timon\RNS_Detect_Annotations\Pitt_Ecogs_events_updated_01212022.csv")
+PATH_OUT = r"C:\Users\ICN_admin\Documents\Datasets\Boston Epilepsy RNS\RNSOut_pynm_more_features"
 
-subjects_use = ['RNS8973', 'RNS7525', 'RNS9183', 'RNS1529', 'RNS2227', 'RNS1534']
+#df_RNS_annot = pd.read_csv(r"X:\Users\timon\RNS_Detect_Annotations\Pitt_Ecogs_events_updated_01212022.csv")
 
-df_per_RNS = pd.read_pickle("performances_RNS_bandpass.p")
+subjects_use = ['RNS1529', 'RNS8973', 'RNS7525', 'RNS9183', 'RNS2227', 'RNS1534']
+
+df_per_RNS = pd.read_pickle("performances_RNS_bandpass_new.p")
 
 out_save_dict = {}
 
