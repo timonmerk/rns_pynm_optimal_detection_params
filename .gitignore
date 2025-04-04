@@ -143,3 +143,5 @@ dmypy.json
 .pdf
 
 sphinx/sub/*
+
+patient_information/*
